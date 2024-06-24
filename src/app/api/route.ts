@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { addGuestMassage, getGuestMassage } from '@/lib/models/guestBook';
 
 type guestMassage = {
   username: string;
@@ -8,13 +9,13 @@ type guestMassage = {
 
 let listMassage : Array<guestMassage> = [];
 
-export const GET = (req : NextRequest ) => {
-  
-  return new NextResponse(JSON.stringify(listMassage));
+export const GET = async (req : NextRequest ) => {
+  let responseDB = await getGuestMassage();
+  return new NextResponse(JSON.stringify(responseDB));
 }
 
 export const POST = async (req : NextRequest) => {
   const body = await req.json();
-  listMassage.push(body);
-  return new NextResponse(JSON.stringify({massage : "succes"}))
+  let responseDB = await addGuestMassage({...body,id: Date.now()});
+  return new NextResponse(JSON.stringify({massage : responseDB}));
 }

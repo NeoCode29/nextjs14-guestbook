@@ -13,8 +13,11 @@ const ListMassage = () => {
     useEffect(() => {
         fetch('./api')
             .then((res) => res.json())
-            .then((res) => {setMassages(res)});
-    })
+            .then((res : Object) => {
+                console.log(Object.values(res));
+                setMassages(Object.values(res));
+            });
+    },[])
 
     return(<div className="grid gap-3">
         {massages.map((value,index) => {
